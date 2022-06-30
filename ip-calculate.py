@@ -18,6 +18,14 @@ class main:
                              fg="black",
                              command=self.ip_to_binary)
         self.button.pack()
+        self.button = Button(self.window,
+                             text="Перевести ip в 10 СС",
+                             width=20,
+                             height=2,
+                             bg="white",
+                             fg="black",
+                             command=self.ip_back)
+        self.button.pack()
         self.window.mainloop()
 
     def ip_to_binary(self):
@@ -46,6 +54,29 @@ class main:
             ip_convert(int(x))
         self.entry.delete(0, END)
         self.entry.insert(0, '.'.join(ip_config))
+
+    def ip_back(self):
+        binary = self.entry.get()
+        ip_decod = []
+        binary = binary.split(".")
+        if len(binary) != 4:
+            return
+
+        def ip_convert(ipb):
+            i = 0
+            act = 7
+            encodip = 0
+            while i < 8:
+                if ipb[i] == '1':
+                    encodip = encodip + 2**act
+                i += 1
+                act -= 1
+            ip_decod.append(encodip)
+
+        for x in binary:
+            ip_convert(list(x))
+        self.entry.delete(0, END)
+        self.entry.insert(0, '.'.join(str(e) for e in ip_decod))
 
 
 window = Tk()
